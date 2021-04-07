@@ -1,0 +1,42 @@
+﻿@if (TempData.ContainsKey("mesajCategorie"))
+{
+    <div class="panel panel-default text-success" style="text-align:center">
+        <b>A fost @TempData["mesajCategorie"] cu succes categoria!</b>
+    </div>
+}
+
+@{
+    ViewBag.Title = "Index";
+}
+<br />
+<div style="text-align:center">
+    <h2>Categoriile</h2>
+</div>
+<hr />
+
+<br />
+<br />
+<br />
+
+
+@foreach (var cat in ViewBag.Categorii)
+{
+<div class="panel panel-default">
+    <div class="panel-heading" style="text-align:center">
+        Titlul categotiei: <b>@cat.Titlu</b>
+    </div>
+    <div class="panel-body" style="text-align:center">
+        <form method="post" action="/Categorii/Sterge/@cat.CategorieId">
+            @Html.HttpMethodOverride(HttpVerbs.Delete)
+            <button type="submit" class="btn-primary btn-sm">Sterge Categorie</button>
+            <a href="/Categorii/ProduseCategorie/@cat.CategorieId" class="btn btn-primary btn-sm">Vezi produsele din aceasta categorie</a>
+            <a href="/Categorii/Schimba/@cat.CategorieId" class="btn btn-primary btn-sm">Schimba denumirea</a>
+
+        </form>
+    </div>
+</div>
+<br />
+}
+
+<a class="btn btn-primary" href="/Categorii/Add">Adauga Categorie</a>
+<a class="btn btn-primary" href="/Produse/Index">Vezi produsele</a>

@@ -1,0 +1,63 @@
+﻿@model ProiectAppWeb.Models.Produs
+
+@{
+    ViewBag.Title = "Editeaza";
+}
+<br />
+<div style="text-align:center">
+    <h2>Editeaza produsul</h2>
+</div>
+<hr />
+
+<br />
+<br />
+<br />
+
+<form class="panel panel-default" method="post" action="/Produse/Editeaza/@Model.ProdusId">
+    @Html.HttpMethodOverride(HttpVerbs.Put)
+    <br />
+    <div style="display:flex;justify-content:space-around;flex-direction:row">
+        <div>
+            @Html.Label("Titlu", " Titlul: ")<br />
+            @Html.Editor("Titlu")<br />
+            @Html.ValidationMessageFor(m => m.Titlu, null, new { @class = "text-danger" })
+            <br /><br />
+            @Html.Label("Descriere", " Descriere: ")<br />
+            @Html.Editor("Descriere")<br />
+            @Html.ValidationMessageFor(m => m.Descriere, null, new { @class = "text-danger" })
+
+            <br /><br />
+            @Html.Label("Pret", " Pret: ")<br />
+            @Html.Editor("Pret")<br />
+            @Html.ValidationMessageFor(m => m.Pret, null, new { @class = "text-danger" })
+
+            <br /><br />
+            @Html.Label("urlPoza", " Link catre poza: ")<br />
+            @Html.Editor("urlPoza")<br />
+            @Html.ValidationMessageFor(m => m.urlPoza, null, new { @class = "text-danger" })
+
+            <br /><br />
+            @Html.DropDownList("CategorieId",
+                new SelectList(ViewBag.cat, "Value", "Text"), "Selectati categoria", new { @class = "form-control" })
+            @Html.ValidationMessageFor(m => m.CategorieId, null, new { @class = "text-danger" })
+            <br />
+            <button class="btn btn-sm btn-primary" type="submit">Salveaza</button>
+        </div>
+        <div class="text-danger">
+
+            @Html.ValidationMessageFor(m => m.Titlu, null, new { @class = "text-danger" })<br />
+
+            @Html.ValidationMessageFor(m => m.Descriere, null, new { @class = "text-danger" })<br />
+
+            @Html.ValidationMessageFor(m => m.Pret, null, new { @class = "text-danger" })<br />
+
+            @Html.ValidationMessageFor(m => m.urlPoza, null, new { @class = "text-danger" })<br />
+            @Html.ValidationMessageFor(m => m.CategorieId, null, new { @class = "text-danger" })
+        </div>
+    </div>
+
+</form>
+<br />
+<br />
+
+<a class="btn btn-primary" href="/Produse/Index">Vezi produsele</a>

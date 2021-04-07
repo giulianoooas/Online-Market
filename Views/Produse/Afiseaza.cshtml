@@ -1,0 +1,163 @@
+﻿@model ProiectAppWeb.Models.Produs
+
+@{
+    ViewBag.Title = "Afiseaza";
+    int j = 5;
+    int nr = 0;
+    float s = 0;
+    String mesaj = "Nu avem momentan";
+}
+
+@if (TempData.ContainsKey("mesajReview"))
+{
+    <div class="panel panel-default text-success" style="text-align:center">
+        <b> A fost @TempData["mesajReview"] cu succes comentariul!</b>
+    </div>
+}
+
+@if (TempData.ContainsKey("message"))
+{
+    <div class="panel panel-default text-success" style="text-align:center">
+        <b> @TempData["message"] </b>
+    </div>
+}
+
+<br />
+<div style="text-align:center">
+    <h2>Afiseaza separat fiecare produs</h2>
+</div>
+<hr />
+
+<br />
+<br />
+<br />
+
+@foreach (var a in ViewBag.Rew)
+{
+    nr++;
+    s += a.nrStars;
+}
+@if (nr != 0)
+{
+    s = s / nr;
+    mesaj = s.ToString();
+}
+
+<div class="panel panel-default">
+    @Html.Partial("ProduseTemplate", Model)
+    <form class="panel-footer" method="post" action="/Produse/Sterge/@Model.ProdusId">
+        @Html.HttpMethodOverride(HttpVerbs.Delete)
+        <a href="/Produse/Editeaza/@Model.ProdusId" class="btn btn-primary btn-sm">Editeaza</a>
+        <button type="submit" class="btn-sm btn-primary">Sterge Produs</button>
+    </form>
+</div>
+
+<br />
+<br />
+<a class="btn btn-primary" href="/Produse/Index">Vezi produsele</a>
+
+<br />
+<br />
+
+<form class="panel panel-group" method="post" action="/Review/Add/@Model.ProdusId">
+    @Html.Label("Content", "Parere:")
+    @Html.TextBox("Content", null, new { @class = "form-control" })
+    @if (TempData.ContainsKey("EroareAdaugareCometariu"))
+    {
+        <div class="text-danger">
+            Comentariul are nevoie de un continut.
+        </div>
+        TempData.Remove("EroareAdaugareCometariu");
+    }
+    <br />
+    <br />
+    @Html.Label("Lasa si un rating produsului:")
+    @Html.DropDownList("nrStars",
+    new SelectList(ViewBag.lista, "Value", "Text"), new { @class = "form-control" })
+    <br />
+    <div class="panel-footer">
+        <button class="btn-primary">Adauga Review</button>
+    </div>
+</form>
+<br />
+@if (ViewBag.Ascundele == true)
+{
+    <a class="btn btn-primary" href="/Review/Afiseaza/@Model.ProdusId">Afiseaza Review-urile</a>
+}
+else
+{
+    <h3>
+        Parerile altor utilizatori:
+    </h3>
+    <br />
+    <div style="display:flex; flex-direction:row; justify-content:flex-start">
+        <div>
+            <a class="btn btn-primary" href="/Review/Crescator/@Model.ProdusId">Ordoneaza-le crescator</a>
+            <a class="btn btn-primary" href="/Review/Descrescator/@Model.ProdusId">Ordoneaza-le descrescator</a>
+            <a class="btn btn-primary" href="/Review/Ascunde/@Model.ProdusId">Ascunde Review-urile</a>
+        </div>
+        @if (nr != 0)
+        {
+            <div style="padding-left:10%; padding-right:10%; border-radius:3%;padding-top:1%; width:30%;" class="container bg-primary text-white py-2">
+                <p>
+                    <b>Rating: @mesaj</b>&ensp;
+                    <i class="glyphicon glyphicon-star"></i>
+                </p>
+            </div>
+        }
+    </div>
+}
+<br />
+<br />
+@if (ViewBag.Ascundele == false)
+{
+    <div class="panel panel-group">
+        @foreach (var rew in ViewBag.Rew)
+        {
+            j = 5;
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <div style="display:flex; flex-direction:row; justify-content:space-between">
+                        <div>
+                            @for (int i = 0; i < rew.nrStars; i++, j--)
+                            {
+                                <i class="glyphicon glyphicon-star text-primary"></i>
+                            }
+                            @for (int i = 1; i <= 5 - rew.nrStars; i++)
+                            {
+                                <i class="glyphicon glyphicon-star-empty text-primary"></i>
+                            }
+                        </div>
+                        <div>
+                            @rew.Data
+                        </div>
+                    </div>
+                </div>
+                <div class="panel-body">
+                    <div style="font-size:larger">
+                        @rew.Content
+                    </div><hr />
+                    <div>
+                        <a href="/Review/Like/@rew.ReviewId">
+                            <i class="glyphicon glyphicon-thumbs-up">
+                            </i>
+                        </a> @rew.nrLikes
+                        &emsp;&emsp;
+                        <a href="/Review/Dislike/@rew.ReviewId">
+                            <i class="glyphicon glyphicon-thumbs-down">
+                            </i>
+                        </a> @rew.nrDislikes
+                    </div>
+                </div>
+                <form class="panel-footer" method="post" action="/Review/Delete/@rew.ReviewId">
+                    @Html.HttpMethodOverride(HttpVerbs.Delete)
+                    <a href="/Review/Edit/@rew.ReviewId" class="btn btn-primary brn-sm">Editeaza</a>
+                    <button class="btn-sm btn-primary" type="submit">Sterge</button>
+                    <i> Review scris de </i>
+                    <strong>@rew.User.UserName</strong>
+                </form>
+            </div>
+            <br />
+        }
+    </div>
+}

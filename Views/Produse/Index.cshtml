@@ -1,0 +1,72 @@
+﻿@if (TempData.ContainsKey("atentie"))
+{
+    <div class="panel panel-default text-danger" style="text-align:center">
+        <b> @TempData["atentie"] </b>
+    </div>
+}
+
+@if (TempData.ContainsKey("mesajProdus"))
+{
+    <div class="panel panel-default text-success" style="text-align:center">
+        <b> A fost @TempData["mesajProdus"] cu succes produsul!</b>
+    </div>
+}
+
+@if (TempData.ContainsKey("message"))
+{
+    <div class="panel panel-default text-success" style="text-align:center">
+        <b> @TempData["message"] </b>
+    </div>
+}
+
+<br />
+<div style="text-align:center">
+    <h2>Produsele</h2>
+</div>
+<hr />
+
+<br />
+<br />
+<br />
+
+<form style="text-align:center; padding : 2px;
+display:flex;
+flex-direction:row;
+justify-content:space-around" method="post" action="/Produse/Cauta/">
+    <div>
+        <input type="text" id="nume" name="nume" placeholder="CAUTA PRODUS" />
+        <button class="glyphicon glyphicon-search" type="submit"></button>
+    </div>
+    <div style="display:flex; flex-direction:column; justify-content:flex-start">
+        <div style="font-weight:bolder;border:0.5px black solid">
+            Afiseaza produsele:
+        </div>
+        <div>
+            <a href="/Produse/Cresc" class="btn btn-default">Crecator</a>
+            <a href="/Produse/Desc" class="btn btn-default">Descrescator</a>
+        </div>
+    </div>
+</form>
+<hr />
+
+@foreach (ProiectAppWeb.Models.Produs produs in ViewBag.Produse)
+{
+    <div class="panel panel-default">
+        @Html.Partial("ProduseTemplate", produs)
+        <form class="panel-footer" method="post" action="/Produse/Sterge/@produs.ProdusId">
+            @Html.HttpMethodOverride(HttpVerbs.Delete)
+            <a href="/Produse/Editeaza/@produs.ProdusId" class="btn btn-primary btn-sm">Editeaza</a>
+            <a href="/Produse/Afiseaza/@produs.ProdusId" class="btn btn-primary btn-sm">Arata separat</a>
+            <button type="submit" class="btn-sm btn-primary">Sterge Produs</button>
+            <i class="glyphicon glyphicon-user"></i> <i> Produs vandut de </i>
+            <strong>@produs.User.UserName</strong>
+
+        </form>
+    </div>
+
+
+}
+
+<br />
+<a class="btn btn-primary" href="/Produse/Adauga">Adauga produs</a>
+<a class="btn btn-primary" href="/Categorii/Index">Vezi categoriile</a>

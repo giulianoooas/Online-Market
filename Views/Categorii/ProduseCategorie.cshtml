@@ -1,0 +1,33 @@
+﻿@model ProiectAppWeb.Models.Categorie
+@{
+    ViewBag.Title = "ProduseCategorie";
+}
+
+<br />
+<div style="text-align:center">
+    <h2>Produsele categoriei <b>@Model.Titlu</b></h2>
+</div>
+<hr />
+
+<br />
+<br />
+<br />
+
+@foreach (ProiectAppWeb.Models.Produs produs in ViewBag.Produse)
+{
+    <div class="panel panel-default">
+        @Html.Partial("ProduseTemplate", produs)
+        <form class="panel-footer" method="post" action="/Produse/Sterge/@produs.ProdusId">
+            @Html.HttpMethodOverride(HttpVerbs.Delete)
+            <a href="/Produse/Editeaza/@produs.ProdusId" class="btn btn-primary btn-sm">Editeaza</a>
+            <a href="/Produse/Afiseaza/@produs.ProdusId" class="btn btn-primary btn-sm">Arata separat</a>
+            <button type="submit" class="btn-sm btn-primary">Sterge Produs</button>
+        </form>
+    </div>
+
+
+}
+
+<br />
+<a class="btn btn-primary" href="/Categorii/Index">Vezi catgoriile</a>
+<a class="btn btn-primary" href="/Produse/Adauga">Aadauga produs</a>

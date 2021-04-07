@@ -1,0 +1,36 @@
+﻿@model ProiectAppWeb.Models.Categorie
+@{
+    ViewBag.Title = "Add";
+}
+<br />
+<div style="text-align:center">
+    <h2>Adauga o categorie noua</h2>
+</div>
+<hr />
+
+<br />
+<br />
+<br />
+
+@using (Html.BeginForm(actionName: "Add", controllerName: "Categorii"))
+{
+   <br />
+    @Html.Label("Titlu", "Numele categoriei")
+    <br />
+    @Html.TextBox("Titlu", null, new { @class = "form-control" })
+    @Html.ValidationMessageFor(m => m.Titlu, null , new { @class = "text-danger"})
+    if (TempData.ContainsKey("EroareDeRepetareACategoerie"))
+    {
+        <div class="text-danger">
+        @TempData["EroareDeRepetareACategoerie"]
+        </div>
+    }
+    <br />
+
+    <div class="panel panel-footer">
+        <button class="btn-primary" type="submit">Adauga</button>
+    </div>
+}
+<br />
+<br />
+<a class="btn btn-primary" href="/Categorii/Index">Vezi catgoriile</a>

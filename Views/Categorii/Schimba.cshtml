@@ -1,0 +1,37 @@
+﻿@model ProiectAppWeb.Models.Categorie
+@{
+    ViewBag.Title = "Schimba";
+}
+<br />
+<div style="text-align:center">
+    <h2>Editeaza categorie</h2>
+</div>
+<hr />
+
+<br />
+<br />
+<br />
+
+<form class="panel panel-default" method="post" action="/Categorii/Schimba/@Model.CategorieId">
+    @Html.HttpMethodOverride(HttpVerbs.Put)
+    <br />
+    @Html.Label("Titlu", "Numele categoriei")
+    <br />
+    @Html.EditorFor(m => m.Titlu)<br />
+    @Html.ValidationMessageFor(m => m.Titlu, null, new { @class = "text-danger" })<br />
+
+    @if (TempData.ContainsKey("EroareDeRepetareACategoerie"))
+    {
+    <div class="text-danger">
+        @TempData["EroareDeRepetareACategoerie"]
+    </div>
+    }
+    <br />
+    <div class="panel panel-footer">
+        <button class="btn-primary" type="submit">Editeaza</button>
+    </div>
+</form>
+
+<br />
+<br />
+<a class="btn btn-primary" href="/Categorii/Index">Vezi catgoriile</a>

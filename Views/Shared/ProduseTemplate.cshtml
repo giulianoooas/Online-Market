@@ -1,0 +1,22 @@
+﻿<div class="panel-heading">
+    <h3>
+        Numele : @Model.Titlu
+    </h3>
+</div>
+<div class="panel-body" style="
+                    display:flex;
+                    flex-direction:row;
+                    justify-content:space-around ">
+    <div style="padding-left:10%; padding-right:10%">
+        <p>
+            Descirere: @Model.Descriere
+        </p>
+        <p>
+            Pret: <b>@Model.Pret</b><i class="glyphicon glyphicon-eur"></i>
+        </p><br />
+        <i class="glyphicon glyphicon-globe"></i> @Model.Categorie.Titlu
+    </div>
+    <div style="padding-left:10%; padding-right:10%">
+        <img src="@Model.urlPoza" style="border-radius:20%;width:50%" />
+    </div>
+</div>
